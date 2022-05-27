@@ -7,21 +7,31 @@ import java.util.*;
 
 public class Professor extends Funcionario {
 
-    private static int numeroMaxCopias = 200;
+    private int numMaxcopias = 200;
+    private int numCopias = 0;
     private List<Disciplina> disciplinas = new ArrayList<>();
     private String horarioAtendimento;
+    private List<DisciplinaSemestre> disciplinaSemestres = new ArrayList<>();
 
     public Professor(String nome, char sexo, Date data_nascimento, int idade, int matricula, String unidade, String departamento, String horarioAtendimento) {
         super(nome, sexo, data_nascimento, idade, matricula, unidade, departamento);
         this.horarioAtendimento = horarioAtendimento;
     }
 
-    public int getNumeroMaxCopias() {
-        return numeroMaxCopias;
+    public int getNumMaxcopias() {
+        return numMaxcopias;
     }
 
-    public void setNumeroMaxCopias(int numeroMaxCopias) {
-        this.numeroMaxCopias = numeroMaxCopias;
+    public void setNumMaxcopias(int numMaxcopias) {
+        this.numMaxcopias = numMaxcopias;
+    }
+
+    public int getNumCopias() {
+        return numCopias;
+    }
+
+    public void setNumCopias(int numCopias) {
+        this.numCopias = numCopias;
     }
 
     public List<Disciplina> getDisciplinas() {
@@ -40,7 +50,7 @@ public class Professor extends Funcionario {
         this.horarioAtendimento = horarioAtendimento;
     }
 
-    public void AdicionaDisciplina()
+    public void AdicionaDisciplina(Professor professor)
     {
         boolean sair = false;
         Scanner entrada = new Scanner(System.in);
@@ -55,11 +65,32 @@ public class Professor extends Funcionario {
             switch (opcao)
             {
                 case 1:
-
                     System.out.println("Digite o nome da disciplina ministrada pelo professor: ");
                     String disciplina = entrada.next();
-                    disciplinas.add(new Disciplina(disciplina));
-                    System.out.println("Disciplina adicionada");
+
+                    System.out.println("Digite o periodo: ");
+                    int periodo = entrada.nextInt();
+
+                    Disciplina disciplina1 = new Disciplina(disciplina);
+                    DisciplinaSemestre disciplinaSemestre = new DisciplinaSemestre(periodo, disciplina1, professor);
+                    disciplinaSemestres.add(disciplinaSemestre);
+
+                    boolean discMin = false;
+                    for (DisciplinaSemestre semestre : disciplinaSemestres) {
+                        if (semestre.getDisciplina().getNome() == disciplina
+                                && semestre.getAnoSemestre() == periodo) {
+                            System.out.println("Disciplina ja ministrada");
+                            discMin = true;
+                            disciplinaSemestres.remove(disciplinaSemestre);
+                            break;
+                        }
+                    }
+
+                    if (!discMin)
+                    {
+                        professor.disciplinas.add(disciplina1);
+                        System.out.println("Disciplina adicionada");
+                    }
                     break;
                 case 2:
                     sair = true;

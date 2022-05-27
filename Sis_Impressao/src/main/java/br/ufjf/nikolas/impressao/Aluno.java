@@ -11,6 +11,7 @@ public class Aluno extends Pessoa {
     private int matricula;
     private String curso;
     private int numMaxcopias = 50;
+    private int numCopias = 0;
 
     public Aluno(String nome, char sexo, Date data_nascimento, int idade, int matricula, String curso) {
         super(nome, sexo, data_nascimento, idade);
@@ -40,5 +41,13 @@ public class Aluno extends Pessoa {
 
     public void setNumMaxcopias(int numMaxcopias) {
         this.numMaxcopias = numMaxcopias;
+    }
+
+    public int getNumCopias() {
+        return numCopias;
+    }
+
+    public void setNumCopias(int numCopias) {
+        this.numCopias = numCopias;
     }
 }

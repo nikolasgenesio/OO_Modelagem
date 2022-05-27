@@ -22,7 +22,7 @@ public class Secretario extends Funcionario {
         String data = entrada.next();
         Date data_Pedido =new SimpleDateFormat("dd/MM/yyyy").parse(data);
 
-        System.out.println("Digite a cor da impressão: ");
+        System.out.println("Digite a cor da impressao: ");
         String cor = entrada.next();
 
         System.out.println("Digite a impressora: ");
@@ -31,29 +31,61 @@ public class Secretario extends Funcionario {
         System.out.println("Digite o status do pedido: ");
         String status = entrada.next();
 
-        System.out.println("Digite a data do pedido (dd/MM/yyyy): ");
+        System.out.println("Digite a data de entrega do pedido (dd/MM/yyyy): ");
         data = entrada.next();
         Date data_Entrega =new SimpleDateFormat("dd/MM/yyyy").parse(data);
-
-        PedidoImpressao pedidoImpressao = null;
 
         System.out.println("Digite a forma de pagamento: ");
         String forma = entrada.next();
 
+        status = "entregue";
 
-        pedidoImpressao = new PedidoImpressao(numero, data_Pedido,
+        PedidoImpressao pedidoImpressao = new PedidoImpressao();
+        int val = pedidoImpressao.adicionaItemAluno(aluno);
+
+        PedidoImpressao pedidoImpressao1 = new PedidoImpressao(numero, data_Pedido,
                 cor, impressora, status, data_Entrega, this,
-                aluno, new Pagamento(1, forma));
+                aluno, new Pagamento((float) (val * 0.25), forma));
+
+        pedidoImpressao1.imprimePedido();
     }
 
-    /*
-    public void pedidoImpressaoProfessor(Professor professor)
-    {
-        PedidoImpressao pedidoImpressao = new PedidoImpressao(1, "21/12/2020",
-                "pb", "i", "i", "12/12/2012", this,
-                professor, new Pagamento(4, "credito"));
-        pedidoImpressao.adicionaItemProfessor(professor);
+
+    public void pedidoImpressaoProfessor(Professor professor) throws ParseException {
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("Digite o numero do pedido: ");
+        int numero = entrada.nextInt();
+
+        System.out.println("Digite a data do pedido (dd/MM/yyyy): ");
+        String data = entrada.next();
+        Date data_Pedido =new SimpleDateFormat("dd/MM/yyyy").parse(data);
+
+        System.out.println("Digite a cor da impressao: ");
+        String cor = entrada.next();
+
+        System.out.println("Digite a impressora: ");
+        String impressora = entrada.next();
+
+        System.out.println("Digite o status do pedido: ");
+        String status = entrada.next();
+
+        System.out.println("Digite a data de entrega do pedido (dd/MM/yyyy): ");
+        data = entrada.next();
+        Date data_Entrega =new SimpleDateFormat("dd/MM/yyyy").parse(data);
+
+        System.out.println("Digite a forma de pagamento: ");
+        String forma = entrada.next();
+
+        status = "entregue";
+
+        PedidoImpressao pedidoImpressao = new PedidoImpressao();
+        int val = pedidoImpressao.adicionaItemProfessor(professor);
+
+        PedidoImpressao pedidoImpressao1 = new PedidoImpressao(numero, data_Pedido,
+                cor, impressora, status, data_Entrega, this,
+                professor, new Pagamento((float) (val * 0.25), forma));
+
+        pedidoImpressao1.imprimePedido();
     }
 
-     */
 }

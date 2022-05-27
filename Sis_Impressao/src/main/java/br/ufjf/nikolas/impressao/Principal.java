@@ -100,11 +100,11 @@ public class Principal {
         System.out.println("Digite o departamento do professor: ");
         String departamento = entrada.next();
 
-        System.out.println("Digite os horarios de atendimento do professor: ");
+        System.out.println("Digite o horario de atendimento do professor: ");
         String hora = entrada.next();
 
         Professor professor = new Professor(nome, sexo, date, idade, matricula, unidade, departamento, hora);
-        professor.AdicionaDisciplina();
+        professor.AdicionaDisciplina(professor);
         return professor;
     }
 
@@ -146,25 +146,33 @@ public class Principal {
                             s2 += ((i + 1) + ". " + usuarios.get(i).getNome() + "\n"); //adiciona
                         }
                     }
+                    if(!s2.equals(""))
+                    {
                         System.out.println("Digite o numero do aluno:\n\n"+s2);
                         int opAluno = entrada.nextInt();
                         opAluno--;
                         Aluno aluno1 = (Aluno) usuarios.get(opAluno);
                         secretario.pedidoImpressaoAluno(aluno1);
+                    }
+                    break;
                 case 5:
                     String s22 = "";
-                    for (int i = 0; i < usuarios.size(); i++)
-                    {
+                    for (int i = 0; i < usuarios.size(); i++) {
                         String s1 = usuarios.get(i).getClass().getSimpleName();
-                        if(s1.equals("Professor"))
-                        {
+                        if (s1.equals("Professor")) {
                             s22 += ((i + 1) + ". " + usuarios.get(i).getNome() + "\n"); //adiciona
                         }
+                    }
+                    if(!s22.equals(""))
+                    {
                         System.out.println("Digite o numero do professor:\n\n"+s22);
                         int opProfessor = entrada.nextInt();
+                        opProfessor--;
                         Professor professor1 = (Professor) usuarios.get(opProfessor);
-                        //secretario.pedidoImpressaoProfessor(professor1);
+                        secretario.pedidoImpressaoProfessor(professor1);
                     }
+                    break;
+
                 case 6:
                     sair = true;
                     break;

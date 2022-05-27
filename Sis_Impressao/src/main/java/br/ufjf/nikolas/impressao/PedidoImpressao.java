@@ -1,5 +1,6 @@
 package br.ufjf.nikolas.impressao;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,10 @@ public class PedidoImpressao {
     private Pessoa pessoa;
     private Pagamento pagamento;
     private List<ItemImpressao> itens = new ArrayList<>();
-    private int numeroImpressoes = 0;
+    private static int numeroImpressoes = 0;
+
+    public PedidoImpressao() {
+    }
 
     public PedidoImpressao(int numero, Date dataPedido, String corImpressao, String impressora, String status, Date dataEntrega, Secretario secretario, Pessoa pessoa, Pagamento pagamento) {
         this.numero = numero;
@@ -25,7 +29,6 @@ public class PedidoImpressao {
         this.secretario = secretario;
         this.pessoa = pessoa;
         this.pagamento = pagamento;
-        //this.itens = itens;
     }
 
     public int getNumero() {
@@ -93,6 +96,30 @@ public class PedidoImpressao {
         this.numeroImpressoes = numeroImpressoes;
     }
 
+    public Secretario getSecretario() {
+        return secretario;
+    }
+
+    public void setSecretario(Secretario secretario) {
+        this.secretario = secretario;
+    }
+
+    public Pagamento getPagamento() {
+        return pagamento;
+    }
+
+    public void setPagamento(Pagamento pagamento) {
+        this.pagamento = pagamento;
+    }
+
+    public List<ItemImpressao> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<ItemImpressao> itens) {
+        this.itens = itens;
+    }
+
     public int adicionaItemAluno(Aluno aluno)
     {
         boolean sair = false;
@@ -121,8 +148,9 @@ public class PedidoImpressao {
                     }
                     else
                     {
-                        this.setNumeroImpressoes(this.getNumeroImpressoes() + num);
-                        return this.getNumeroImpressoes();
+                        aluno.setNumCopias(aluno.getNumCopias() + (num - aluno.getNumMaxcopias()));
+                        aluno.setNumMaxcopias(0);
+                        return aluno.getNumCopias();
                     }
                 case 2:
                     sair = true;
@@ -134,29 +162,61 @@ public class PedidoImpressao {
         return -1;
     }
 
-    public void adicionaItemProfessor(Professor professor)
+    public int adicionaItemProfessor(Professor professor)
     {
+        boolean sair = false;
+        Scanner entrada = new Scanner(System.in);
 
-    }
+        while(sair == false)
+        {
+            System.out.println("MENU:" +
+                    "\n1. Adicionar item" +
+                    "\n2. Sair");
+            int opcao = entrada.nextInt();
 
-    @Override
-    public String toString() {
-        return "PedidoImpressao{" +
-                "numero=" + numero +
-                ", dataPedido='" + dataPedido + '\'' +
-                ", corImpressao='" + corImpressao + '\'' +
-                ", Impressora='" + impressora + '\'' +
-                ", Status='" + status + '\'' +
-                ", dataEntrega='" + dataEntrega + '\'' +
-                ", secretario=" + secretario +
-                ", pessoa=" + pessoa +
-                ", pagamento=" + pagamento +
-                ", itens=" + itens +
-                '}';
+            switch (opcao)
+            {
+                case 1:
+                    System.out.println("Digite o nome do arquivo: ");
+                    String arq = entrada.next();
+                    System.out.println("Digite o numero de copias: ");
+                    int num = entrada.nextInt();
+                    if(num <= professor.getNumMaxcopias())
+                    {
+                        itens.add(new ItemImpressao(arq, num));
+                        System.out.println("Item adicionado");
+                        professor.setNumMaxcopias(professor.getNumMaxcopias() - num);
+                        return 0;
+                    }
+                    else
+                    {
+                        professor.setNumCopias(professor.getNumCopias() + (num - professor.getNumMaxcopias()));
+                        professor.setNumMaxcopias(0);
+                        return professor.getNumCopias();
+                    }
+                case 2:
+                    sair = true;
+                    break;
+                default:
+                    System.out.println("Opcao Invalida");
+            }
+        }
+        return -1;
     }
 
     public void imprimePedido()
     {
-
+        String dataPed = new SimpleDateFormat("dd/MM/yyyy").format(this.getDataPedido());
+        String dataEnt = new SimpleDateFormat("dd/MM/yyyy").format(this.getDataEntrega());
+        System.out.println("Pedido de impressao n: "+this.getNumero()+
+                "\nData do pedido: "+dataPed+
+                "\nCor da Impressao: "+this.getCorImpressao()+
+                "\nImpressora: "+this.getImpressora()+
+                "\nStatus: "+this.getStatus()+
+                "\nData de entrega: "+dataEnt+
+                "\nSecretario: "+this.getSecretario().getNome()+
+                "\nPessoa: "+this.getPessoa().getNome()+
+                "\nFuncao: "+this.getPessoa().getClass().getSimpleName()+
+                "\nPagamento: "+this.getPagamento().getValor());
     }
 }

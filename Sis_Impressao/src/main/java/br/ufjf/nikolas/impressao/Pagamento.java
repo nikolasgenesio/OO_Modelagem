@@ -5,6 +5,9 @@ public class Pagamento {
     private String formaPagamento;
     private PedidoImpressao pedidoImpressao;
 
+    public Pagamento() {
+    }
+
     public Pagamento(float valor, String formaPagamento) {
         this.valor = valor;
         this.formaPagamento = formaPagamento;
